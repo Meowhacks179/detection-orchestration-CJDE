@@ -1,0 +1,7 @@
+name: Sigma to Splunk (placeholder)
+on: [push]
+jobs:
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Pipeline will go here"
