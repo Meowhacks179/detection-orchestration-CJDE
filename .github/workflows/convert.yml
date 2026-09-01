@@ -23,6 +23,14 @@ jobs:
       run: |
         bash scripts/convert_splunk.sh
 
+    - name: Commit converted rules back to repo
+      run: |
+        git config user.name "Meowhacks179"
+        git config user.email "meowhacks@proton.me"
+        git add converted/splunk/savedsearches.conf
+        git commit -m "Auto-update Splunk converted rules"
+        git push
+
     - name: Upload converted Splunk rules
       uses: actions/upload-artifact@v4
       with:
