@@ -15,9 +15,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install sigma-cli
+    - name: Install Sigma converter
       run: |
-        pip install sigma-cli
+        pip install sigmatools
 
     - name: Run conversion script
       run: |
