@@ -1,7 +1,30 @@
-name: Sigma to Splunk (placeholder)
-on: [push]
+name: Convert Sigma to Splunk
+
+on:
+  push:
+    paths:
+      - "sigma/**"
+      - "scripts/**"
+      - ".github/workflows/convert.yml"
+
 jobs:
-  dummy:
+  convert:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "Pipeline will go here"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install sigma-cli
+      run: |
+        pip install sigma-cli
+
+    - name: Run conversion script
+      run: |
+        bash scripts/convert_splunk.sh
+
+    - name: Upload converted Splunk rules
+      uses: actions/upload-artifact@v3
+      with:
+        name: splunk-rules
+        path: converted/splunk/savedsearches.conf
