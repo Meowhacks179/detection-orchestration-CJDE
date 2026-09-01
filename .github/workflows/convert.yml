@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install sigma-cli
       run: |
@@ -24,7 +24,7 @@ jobs:
         bash scripts/convert_splunk.sh
 
     - name: Upload converted Splunk rules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: splunk-rules
         path: converted/splunk/savedsearches.conf
