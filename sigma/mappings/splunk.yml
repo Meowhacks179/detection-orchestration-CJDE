@@ -1,0 +1,17 @@
+title: Splunk Sysmon Mapping
+order: 100
+
+logsources:
+  windows:
+    product: windows
+    conditions:
+      index: sysmon
+
+  file_event:
+    category: file_event
+    conditions:
+      EventID: 11
+
+fieldmappings:
+  TargetFilename: TargetFilename
+  Image: Image
