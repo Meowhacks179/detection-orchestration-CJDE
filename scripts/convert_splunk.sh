@@ -1,29 +1,18 @@
 #!/bin/bash
+set -euo pipefail
 
 SIGMA_DIR="sigma"
 OUTPUT_DIR="converted/splunk"
 OUTPUT_FILE="$OUTPUT_DIR/savedsearches.conf"
+PIPELINE="sigma/mappings/splunk.yml"
 
 mkdir -p "$OUTPUT_DIR"
-echo "" > "$OUTPUT_FILE"
 
-for rule in $(find "$SIGMA_DIR" -name "*.yml"); do
-    echo "Converting: $rule"
-
-    RULE_NAME=$(basename "$rule" .yml)
-
-    # Use sigma-cli instead of sigmac
-    SPL_QUERY=$(sigma convert -t splunk -c sigma/mappings/splunk.yml "$rule")
-
-    cat <<EOF >> "$OUTPUT_FILE"
-[$RULE_NAME]
-search = $SPL_QUERY
-cron_schedule = */5 * * * *
-alert_type = always
-alert.severity = 5
-
-EOF
-
-done
+sigma convert \
+  -t splunk \
+  -f savedsearches \
+  -p "$PIPELINE" \
+  -o "$OUTPUT_FILE" \
+  "$SIGMA_DIR"
 
 echo "Conversion complete. Output written to $OUTPUT_FILE"
