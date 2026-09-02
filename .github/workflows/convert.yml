@@ -17,19 +17,21 @@ jobs:
 
     - name: Install Sigma converter
       run: |
-        pip install sigmatools
+        pip install sigma-cli
 
     - name: Run conversion script
       run: |
         bash scripts/convert_splunk.sh
 
     - name: Commit converted rules back to repo
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config user.name "Meowhacks179"
         git config user.email "meowhacks@proton.me"
         git add converted/splunk/savedsearches.conf
-        git commit -m "Auto-update Splunk converted rules"
-        git push
+        git commit -m "Auto-update Splunk converted rules" || echo "No changes to commit"
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/Meowhacks179/detection-orchestration-CJDE.git HEAD:main
 
     - name: Upload converted Splunk rules
       uses: actions/upload-artifact@v4
