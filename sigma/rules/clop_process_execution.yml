@@ -1,0 +1,16 @@
+title: Clop Ransomware Process Execution
+id: clop-002
+status: experimental
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    Image|contains:
+      - "CLOP.exe"
+      - "CLOP64.exe"
+      - "CLOP32.exe"
+  condition: selection
+falsepositives:
+  - Rare admin tools
+level: high
