@@ -13,7 +13,7 @@ for rule in $(find "$SIGMA_DIR" -name "*.yml"); do
     RULE_NAME=$(basename "$rule" .yml)
 
     # Use sigma-cli instead of sigmac
-    SPL_QUERY=$(sigma convert -t splunk "$rule")
+    SPL_QUERY=$(sigma convert -t splunk -c sigma/mappings/splunk.yml "$rule")
 
     cat <<EOF >> "$OUTPUT_FILE"
 [$RULE_NAME]
