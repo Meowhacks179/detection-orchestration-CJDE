@@ -1,16 +1,18 @@
 name: Convert Sigma to Splunk
-
 on:
   push:
+    branches: [main]
     paths:
       - "sigma/**"
       - "scripts/**"
       - ".github/workflows/convert.yml"
 
+permissions:
+  contents: write
+
 jobs:
   convert:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -18,10 +20,10 @@ jobs:
     - name: Install Sigma converter
       run: |
         pip install sigma-cli
+        sigma plugin install splunk
 
     - name: Run conversion script
-      run: |
-        bash scripts/convert_splunk.sh
+      run: bash scripts/convert_splunk.sh
 
     - name: Commit converted rules back to repo
       env:
@@ -29,13 +31,9 @@ jobs:
       run: |
         git config user.name "Meowhacks179"
         git config user.email "meowhacks@proton.me"
-
-        # Prevent push rejection by updating local branch first
         git pull --rebase origin main || true
-
         git add converted/splunk/savedsearches.conf
         git commit -m "Auto-update Splunk converted rules" || echo "No changes to commit"
-
         git push https://x-access-token:${GITHUB_TOKEN}@github.com/Meowhacks179/detection-orchestration-CJDE.git HEAD:main
 
     - name: Upload converted Splunk rules
