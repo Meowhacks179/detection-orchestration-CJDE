@@ -1,0 +1,15 @@
+title: Clop Ransomware File Encryption Activity
+id: clop-001
+status: experimental
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - ".clop"
+      - ".encrypted"
+  condition: selection
+falsepositives:
+  - Backup tools
+level: high
